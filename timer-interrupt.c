@@ -2,10 +2,14 @@
 #include <metal/cpu.h>
 
 int intr_count;
+unsigned long long mtimecmp;
+
+#define CLK_CYCLE_PER_MS 1000
 
 void timer_handler (int id, void *data) {
     intr_count++;
-    metal_cpu_set_mtimecmp((struct metal_cpu *)data, 0xffff);
+    mtimecmp += CLK_CYCLE_PER_MS;
+    metal_cpu_set_mtimecmp((struct metal_cpu *)data, mtimecmp);
 }
 
 int main (void)
@@ -47,7 +51,8 @@ int main (void)
     }
 
     intr_count = 0;
-    metal_cpu_set_mtimecmp(cpu0, 0);
+    metal_cpu_set_mtimecmp(cpu0, CLK_CYCLE_PER_MS);
+    mtimecmp = metal_cpu_get_mtime(cpu0);
     if (metal_interrupt_enable(tmr_intr, tmr_id) == -1) {
         return 5;
     }   
@@ -56,9 +61,8 @@ int main (void)
         return 6;
     }   
     
-    if (intr_count != 1) {
-        return 99; 
-    }   
+    while (intr_count < 2) ;
+
     return 0;
 }
 
