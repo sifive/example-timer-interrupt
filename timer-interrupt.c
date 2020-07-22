@@ -9,8 +9,7 @@ volatile int intr_count = 0;
 void metal_riscv_cpu_intc_mtip_handler() {
     intr_count++;
 
-    struct metal_cpu cpu = metal_cpu_get(metal_cpu_get_current_hartid());
-    metal_cpu_disable_timer_interrupt(cpu);
+    metal_cpu_disable_timer_interrupt();
 }
 
 int main(void) {
@@ -21,8 +20,8 @@ int main(void) {
 
     metal_cpu_set_mtimecmp(cpu, 0);
 
-    metal_cpu_enable_timer_interrupt(cpu);
-    metal_cpu_enable_interrupts(cpu);
+    metal_cpu_enable_timer_interrupt();
+    metal_cpu_enable_interrupts();
     
     if (intr_count != 1) {
         return 1; 
