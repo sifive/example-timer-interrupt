@@ -8,7 +8,7 @@ int intr_count;
 
 void timer_handler (int id, void *data) {
     intr_count++;
-    metal_cpu_set_mtimecmp((struct metal_cpu *)data, 0xffff);
+    metal_cpu_set_mtimecmp((struct metal_cpu *)data, 0x1ffff);
 }
 
 int main (void)
@@ -53,15 +53,22 @@ int main (void)
     metal_cpu_set_mtimecmp(cpu, 0);
     if (metal_interrupt_enable(tmr_intr, tmr_id) == -1) {
         return 5;
-    }   
-    
+    }
+
     if (metal_interrupt_enable(cpu_intr, 0) == -1) {
         return 6;
-    }   
-    
+    }
+
     if (intr_count != 1) {
-        return 99; 
-    }   
+        return 7;
+    }
+
+    __asm__ volatile ("wfi");
+
+    if (intr_count != 2) {
+        return 8;
+    }
+
     return 0;
 }
 
