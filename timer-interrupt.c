@@ -15,9 +15,6 @@ void metal_riscv_cpu_intc_mtip_handler() {
 int main(void) {
     struct metal_cpu cpu = metal_cpu_get(metal_cpu_get_current_hartid());
 
-    uint64_t timeval = metal_cpu_get_timer(cpu);
-    uint64_t timebase = metal_cpu_get_timebase(cpu);
-
     metal_cpu_set_mtimecmp(cpu, 0);
 
     metal_cpu_enable_timer_interrupt();
