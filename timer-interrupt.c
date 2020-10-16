@@ -6,7 +6,7 @@
 #include <metal/timer.h>
 
 #ifndef METAL_WAIT_CYCLE
-#define METAL_WAIT_CYCLE 0
+#define METAL_WAIT_CYCLE 5000
 #endif
 
 volatile int intr_count = 0;
