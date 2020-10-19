@@ -25,9 +25,9 @@ int main(void) {
     metal_cpu_enable_timer_interrupt();
     metal_cpu_enable_interrupts();
 
-    uint64_t cycles;
+    unsigned long long cycles;
     metal_timer_get_cyclecount(metal_cpu_get_current_hartid(), &cycles);
-    const uint64_t wait_cycles = cycles + METAL_WAIT_CYCLE;
+    const unsigned long long wait_cycles = cycles + METAL_WAIT_CYCLE;
     do {
         metal_timer_get_cyclecount(metal_cpu_get_current_hartid(), &cycles);
     } while(cycles < wait_cycles);
